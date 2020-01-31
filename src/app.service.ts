@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-const cheerio = require('cheerio');
+import cheerio from 'cheerio';
 @Injectable()
 export class AppService {
   async getHello(): Promise<string> {
@@ -13,15 +13,14 @@ export class AppService {
         text = $('#content')
           .html()
           .replace(/<br>/g, '');
-        console.log(text);
       })
       .catch(err => {
         text = 'err';
       });
     return text;
   }
-  async searchList(name: string): Promise<Object> {
-    let text = [];
+  async searchList(name: string): Promise<object> {
+    const text = [];
     const keyword = encodeURI(name);
     await axios
       .get(`http://www.147xiaoshuo.com/search.php?keyword=${keyword}`)
@@ -30,7 +29,7 @@ export class AppService {
         const $ = cheerio.load(htmldata);
         const length = $('#bookcase_list').find('tr').length;
         for (let i = 0; i < length - 1; i++) {
-          let param = {
+          const param = {
             name: $('#bookcase_list')
               .find('tr')
               .eq(i)
@@ -83,32 +82,11 @@ export class AppService {
           };
           text.push(param);
         }
-      })
-      .catch(err => {
-        console.log(err);
       });
     return text;
   }
-  async getBookDetail(url: string): Promise<Object> {
-    let text = {};
-    await axios.get(`http://m.147xiaoshuo.com/book/${url}.html`).then(res => {
-      const htmldata = res.data.toString();
-      const $ = cheerio.load(htmldata, { decodeEntities: false });
-      text['title'] = $('#nr_title').text();
-      text['content'] = $('#nr')
-        .html()
-        .replace(/<p>/g, '')
-        .replace(/<\/p>/g, '\n');
-      text['prev'] = $('#pt_prev')
-        .attr('href')
-        .replace(/\/book\//g, '')
-        .replace(/.html/g, '');
-      text['next'] = $('#pt_next')
-        .attr('href')
-        .replace(/\/book\//g, '')
-        .replace(/.html/g, '');
-    });
-
+  async getBookDetail(url: string): Promise<object> {
+    const text = {};
     return text;
   }
 }
