@@ -1,5 +1,5 @@
 {
-  "name": "book-app",
+  "name": "webhook-server",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "pm2": "cross-env NODE_ENV=production pm2 start --name nest dist/main.js"
+    "pm2": "cross-env NODE_ENV=production pm2 start --name webhook-server dist/main.js"
   },
   "dependencies": {
     "@nestjs/common": "^6.7.2",
