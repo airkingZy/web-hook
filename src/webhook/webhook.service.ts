@@ -33,7 +33,7 @@ export class WebHookService {
       dir: path.join(__dirname, `../../src/file/sh/${files.originalname}`),
     };
   }
-  async getGitPush(obj: object, obj1: object): Promise<any> {
+  async getGitPush(obj: object, obj1: object): Promise<string> {
     // console.log(obj);
     const SECRET = 'MY_GITHUB_WEBHOOK_ZYSTYLISH';
     const hmac = crypto
@@ -53,43 +53,52 @@ export class WebHookService {
           `cd ${res.localdir} && bash ${res.bashfile}`,
           async (error, stdout, stderr) => {
             if (error) {
-              console.log(`error: ${error.message}`);
-              await this.webhookModel.updateOne(
+              // console.log(`error: ${error.message}`);
+              const updateRes = await this.webhookModel.updateOne(
                 {
                   githubrepositorie: res.githubrepositorie,
                 },
                 { status: 'fail', log: error },
               );
-              return 'fail';
+              if (updateRes) {
+                return 'fail';
+              }
             }
             if (stderr) {
-              console.log(`stderr: ${stderr}`);
-              await this.webhookModel.updateOne(
+              // console.log(`stderr: ${stderr}`);
+              const updateRes1 = await this.webhookModel.updateOne(
                 {
                   githubrepositorie: res.githubrepositorie,
                 },
                 { status: 'fail', log: stderr },
               );
-              return 'fail';
+              if (updateRes1) {
+                return 'fail';
+              }
+              // return 'fail';
             }
-            console.log(`stdout: ${stdout}`);
-            await this.webhookModel.updateOne(
+            // console.log(`stdout: ${stdout}`);
+            const updateRes2 = await this.webhookModel.updateOne(
               {
                 githubrepositorie: res.githubrepositorie,
               },
               { status: 'success', log: stdout },
             );
-            return 'success';
+            if (updateRes2) {
+              return 'success';
+            }
           },
         );
       } catch (err) {
-        await this.webhookModel.updateOne(
+        const updateRes3 = await this.webhookModel.updateOne(
           {
             githubrepositorie: res.githubrepositorie,
           },
           { status: 'fail', log: err },
         );
-        return 'fail';
+        if (updateRes3) {
+          return 'fail';
+        }
       }
     }
     // const data = {
