@@ -58,7 +58,7 @@ export class WebHookService {
                 {
                   githubrepositorie: res.githubrepositorie,
                 },
-                { status: 'fail', log: error.toString() },
+                { status: 'fail', log: error },
               );
               return 'fail';
             }
@@ -68,7 +68,7 @@ export class WebHookService {
                 {
                   githubrepositorie: res.githubrepositorie,
                 },
-                { status: 'fail', log: error.toString() },
+                { status: 'fail', log: stderr },
               );
               return 'fail';
             }
@@ -77,7 +77,7 @@ export class WebHookService {
               {
                 githubrepositorie: res.githubrepositorie,
               },
-              { status: 'success', log: stdout.toString() },
+              { status: 'success', log: stdout },
             );
             return 'success';
           },
@@ -87,7 +87,7 @@ export class WebHookService {
           {
             githubrepositorie: res.githubrepositorie,
           },
-          { status: 'fail', log: err.toString() },
+          { status: 'fail', log: err },
         );
         return 'fail';
       }
