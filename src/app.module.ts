@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-let dbconfg = 'mongodb://test:!QAZ%40wsx@127.0.0.1:27017/test';
+import { WebHookModule } from './webhook/webhook.module';
+let dbconfg = 'mongodb://zy:!QAZ%40wsx@127.0.0.1:27017/webhook';
 if (process.env.NODE_ENV === 'production') {
-  dbconfg = 'mongodb://stone:!QAZ%40wsx@127.0.0.1:27017/stonebook';
+  dbconfg = 'mongodb://zy:!QAZ%40wsx@127.0.0.1:27017/webhook';
 }
 @Module({
   imports: [
@@ -12,6 +13,7 @@ if (process.env.NODE_ENV === 'production') {
       useCreateIndex: true,
       useNewUrlParser: true,
     }),
+    WebHookModule,
   ],
   controllers: [AppController],
   providers: [AppService],
