@@ -38,7 +38,7 @@ export class WebHookService {
     const SECRET = 'MY_GITHUB_WEBHOOK_ZYSTYLISH';
     const hmac = crypto
       .createHmac('sha1', SECRET)
-      .update(obj1.toString())
+      .update(JSON.stringify(obj1))
       .digest('hex');
     const isAllowed = obj['x-hub-signature'] === `sha1=${hmac}`;
     const key1 = 'ref';
@@ -46,7 +46,7 @@ export class WebHookService {
     const res = await this.webhookModel
       .findOne({ githubrepositorie: obj1[`repository`].full_name })
       .exec();
-    if (isAllowed && isMaster && res) {
+    if (isAllowed && res && isMaster) {
       // return { ok: 'ok' };
       try {
         exec(
