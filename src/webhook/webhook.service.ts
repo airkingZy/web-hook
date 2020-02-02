@@ -53,8 +53,8 @@ export class WebHookService {
           `cd ${res.localdir} && bash ${res.bashfile}`,
           async (error, stdout, stderr) => {
             if (error) {
-              // console.log(`error: ${error.message}`);
-              await this.webhookModel.update(
+              console.log(`error: ${error.message}`);
+              await this.webhookModel.updateOne(
                 {
                   githubrepositorie: res.githubrepositorie,
                 },
@@ -63,8 +63,8 @@ export class WebHookService {
               return 'fail';
             }
             if (stderr) {
-              // console.log(`stderr: ${stderr}`);
-              await this.webhookModel.update(
+              console.log(`stderr: ${stderr}`);
+              await this.webhookModel.updateOne(
                 {
                   githubrepositorie: res.githubrepositorie,
                 },
@@ -72,8 +72,8 @@ export class WebHookService {
               );
               return 'fail';
             }
-            // console.log(`stdout: ${stdout}`);
-            await this.webhookModel.update(
+            console.log(`stdout: ${stdout}`);
+            await this.webhookModel.updateOne(
               {
                 githubrepositorie: res.githubrepositorie,
               },
@@ -83,7 +83,7 @@ export class WebHookService {
           },
         );
       } catch (err) {
-        await this.webhookModel.update(
+        await this.webhookModel.updateOne(
           {
             githubrepositorie: res.githubrepositorie,
           },
